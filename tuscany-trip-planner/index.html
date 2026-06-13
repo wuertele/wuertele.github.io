@@ -114,6 +114,12 @@
       line-height: 1.45;
     }
 
+    .subtitle-ja {
+      max-width: 760px;
+      margin-top: 8px;
+      color: rgba(255, 253, 247, 0.82);
+    }
+
     .summary-panel {
       display: flex;
       min-height: 268px;
@@ -372,6 +378,34 @@
       font-size: 0.62rem;
       line-height: 1;
       text-transform: uppercase;
+    }
+
+    .title-ja,
+    .top-name-ja,
+    .description-ja {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .title-ja {
+      margin: 4px 0 0;
+      color: var(--olive);
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .top-name-ja {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .description-ja {
+      margin-top: 8px;
+      color: #514836;
     }
 
     .photo {
@@ -685,6 +719,7 @@
         <p class="kicker">Tuscany - countryside first - 3 raters</p>
         <h1 id="page-title">tuscany-trip-planner</h1>
         <p class="subtitle">A shared ranking board for Tuscan hill towns, cypress roads, abbeys, wine country, coast and island options, plus a focused set of Florence sights.</p>
+        <p class="subtitle subtitle-ja" lang="ja">トスカーナの丘上都市、糸杉の道、修道院、ワイン産地、海岸や島、そしてフィレンツェの主要スポットを3人で比べるための共有ランキングです。</p>
       </section>
 
       <aside class="summary-panel" aria-label="Ranked destination summary">
@@ -768,6 +803,7 @@
       {
         id: "val-d-orcia",
         name: "Val d'Orcia Scenic Drive",
+        nameJa: "ヴァル・ドルチャ絶景ドライブ",
         categoryIds: ["landscape", "hill-town"],
         area: "South of Siena",
         time: "Half day",
@@ -775,11 +811,13 @@
         note: "Best by car",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/I_cipressi_della_Val_D%27Orcia.jpg/3840px-I_cipressi_della_Val_D%27Orcia.jpg",
         info: "https://whc.unesco.org/en/list/1026",
-        description: "The classic Tuscan landscape of cypress lanes, cultivated hills, stone farmhouses, and small towns. It works best as a slow loop rather than a single stop."
+        description: "The classic Tuscan landscape of cypress lanes, cultivated hills, stone farmhouses, and small towns. It works best as a slow loop rather than a single stop.",
+        descriptionJa: "糸杉並木、耕された丘、石造りの農家、小さな町が続く、トスカーナらしい景観です。ひとつの目的地として急ぐより、車でゆっくり巡る周遊ルートに向いています。"
       },
       {
         id: "pienza",
         name: "Pienza",
+        nameJa: "ピエンツァ",
         categoryIds: ["hill-town", "history", "wine-food"],
         area: "Val d'Orcia",
         time: "2-4 hr",
@@ -787,11 +825,13 @@
         note: "Pecorino stop",
         image: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Pienza_italy.jpg",
         info: "https://whc.unesco.org/en/list/789",
-        description: "A compact Renaissance hill town with an elegant main square, panoramic walls, and many pecorino shops. It is one of the easiest Val d'Orcia towns to enjoy without rushing."
+        description: "A compact Renaissance hill town with an elegant main square, panoramic walls, and many pecorino shops. It is one of the easiest Val d'Orcia towns to enjoy without rushing.",
+        descriptionJa: "優雅な広場、眺めのよい城壁、ペコリーノの店が並ぶ、コンパクトなルネサンスの丘上都市です。ヴァル・ドルチャの町の中でも、急がず楽しみやすい場所です。"
       },
       {
         id: "montalcino",
         name: "Montalcino & Brunello Country",
+        nameJa: "モンタルチーノとブルネッロのワイン郷",
         categoryIds: ["hill-town", "wine-food", "landscape"],
         area: "Val d'Orcia",
         time: "Half day",
@@ -799,11 +839,13 @@
         note: "Book tastings",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Montalcino-_panoramio.jpg/3840px-Montalcino-_panoramio.jpg",
         info: "https://en.wikipedia.org/wiki/Montalcino",
-        description: "A fortified wine town with views over the Orcia and Ombrone valleys. Rank it high if a Brunello tasting, an enoteca visit, or a lunch with a view matters."
+        description: "A fortified wine town with views over the Orcia and Ombrone valleys. Rank it high if a Brunello tasting, an enoteca visit, or a lunch with a view matters.",
+        descriptionJa: "オルチャ渓谷とオンブローネ渓谷を見渡す、城壁に囲まれたワインの町です。ブルネッロの試飲、エノテカ巡り、眺めのよい昼食を重視するなら高く評価したい場所です。"
       },
       {
         id: "montepulciano",
         name: "Montepulciano",
+        nameJa: "モンテプルチャーノ",
         categoryIds: ["hill-town", "wine-food", "history"],
         area: "Valdichiana Senese",
         time: "3-5 hr",
@@ -811,11 +853,13 @@
         note: "Steep streets",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/1_montepulciano_aerial_2024.jpg/3840px-1_montepulciano_aerial_2024.jpg",
         info: "https://en.wikipedia.org/wiki/Montepulciano",
-        description: "A dramatic ridge town with Renaissance palaces, wine cellars in the center, and a rewarding climb to Piazza Grande. It is beautiful but more physically demanding than Pienza."
+        description: "A dramatic ridge town with Renaissance palaces, wine cellars in the center, and a rewarding climb to Piazza Grande. It is beautiful but more physically demanding than Pienza.",
+        descriptionJa: "尾根の上に広がる印象的な町で、ルネサンス宮殿、中心部のワインセラー、登った先のグランデ広場が魅力です。美しい一方で、ピエンツァより体力を使います。"
       },
       {
         id: "bagno-vignoni",
         name: "Bagno Vignoni",
+        nameJa: "バーニョ・ヴィニョーニ",
         categoryIds: ["hill-town", "landscape"],
         area: "Val d'Orcia",
         time: "1-2 hr",
@@ -823,11 +867,13 @@
         note: "Thermal village",
         image: "https://upload.wikimedia.org/wikipedia/commons/8/89/Chiesa_bagno_vignoni.jpg",
         info: "https://en.wikipedia.org/wiki/Bagno_Vignoni",
-        description: "A tiny village built around a steaming thermal pool in place of a normal piazza. It is a good short atmospheric stop between Pienza, San Quirico, and Montalcino."
+        description: "A tiny village built around a steaming thermal pool in place of a normal piazza. It is a good short atmospheric stop between Pienza, San Quirico, and Montalcino.",
+        descriptionJa: "普通の広場の代わりに湯気の立つ温泉池を中心にした小さな村です。ピエンツァ、サン・クイリコ、モンタルチーノの間で短く立ち寄るのに向いています。"
       },
       {
         id: "san-gimignano",
         name: "San Gimignano",
+        nameJa: "サン・ジミニャーノ",
         categoryIds: ["hill-town", "history", "timed-entry"],
         area: "Val d'Elsa",
         time: "3-5 hr",
@@ -835,11 +881,13 @@
         note: "Go early",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/1_Aerial_pano_san_gimignano_%282%29a.jpg/3840px-1_Aerial_pano_san_gimignano_%282%29a.jpg",
         info: "https://whc.unesco.org/en/list/550",
-        description: "The tower skyline is unforgettable, and the town is easy to pair with Volterra or a Chianti route. Crowds can be intense, so timing matters more than raw visit length."
+        description: "The tower skyline is unforgettable, and the town is easy to pair with Volterra or a Chianti route. Crowds can be intense, so timing matters more than raw visit length.",
+        descriptionJa: "塔が並ぶスカイラインは忘れがたく、ヴォルテッラやキアンティ方面と組み合わせやすい町です。混雑が強いので、滞在時間そのものより訪れる時間帯が重要です。"
       },
       {
         id: "volterra",
         name: "Volterra",
+        nameJa: "ヴォルテッラ",
         categoryIds: ["hill-town", "history"],
         area: "Val di Cecina",
         time: "3-5 hr",
@@ -847,11 +895,13 @@
         note: "Etruscan roots",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Volterra_from_above._June_2024.jpg/3840px-Volterra_from_above._June_2024.jpg",
         info: "https://en.wikipedia.org/wiki/Volterra",
-        description: "A layered Etruscan, Roman, medieval, and alabaster town that feels rougher-edged than San Gimignano. It rewards people who like archaeology and less polished hill-town wandering."
+        description: "A layered Etruscan, Roman, medieval, and alabaster town that feels rougher-edged than San Gimignano. It rewards people who like archaeology and less polished hill-town wandering.",
+        descriptionJa: "エトルリア、ローマ、中世、アラバスター工芸の層が重なる町で、サン・ジミニャーノより素朴な手触りがあります。考古学や飾りすぎない丘上都市歩きが好きな人に向いています。"
       },
       {
         id: "monteriggioni",
         name: "Monteriggioni",
+        nameJa: "モンテリッジョーニ",
         categoryIds: ["hill-town", "history"],
         area: "Near Siena",
         time: "1-2 hr",
@@ -859,11 +909,13 @@
         note: "Walled town",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Monteriggioni_dall%27alto.jpg/3840px-Monteriggioni_dall%27alto.jpg",
         info: "https://en.wikipedia.org/wiki/Monteriggioni",
-        description: "A small intact ring of walls and towers, useful as a short stop on the way to Siena or San Gimignano. It is not a full day, but it is very legible and photogenic."
+        description: "A small intact ring of walls and towers, useful as a short stop on the way to Siena or San Gimignano. It is not a full day, but it is very legible and photogenic.",
+        descriptionJa: "城壁と塔がきれいに残る小さな町で、シエナやサン・ジミニャーノへ向かう途中の短い立ち寄りに便利です。一日を使う場所ではありませんが、分かりやすく写真映えします。"
       },
       {
         id: "siena",
         name: "Siena Historic Center",
+        nameJa: "シエナ歴史地区",
         categoryIds: ["hill-town", "history", "sacred-art", "timed-entry"],
         area: "Siena",
         time: "Half-full day",
@@ -871,11 +923,13 @@
         note: "Duomo booking",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg/3840px-Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg",
         info: "https://whc.unesco.org/en/list/717",
-        description: "A larger city stop, but still essential if medieval urban form, Piazza del Campo, and the cathedral complex are priorities. It competes with Florence for dense art-and-architecture time."
+        description: "A larger city stop, but still essential if medieval urban form, Piazza del Campo, and the cathedral complex are priorities. It competes with Florence for dense art-and-architecture time.",
+        descriptionJa: "比較的大きな都市ですが、中世の都市構造、カンポ広場、大聖堂複合施設を重視するなら外しにくい場所です。濃密な美術・建築の時間という意味ではフィレンツェと競合します。"
       },
       {
         id: "lucca",
         name: "Lucca Walls & Old Town",
+        nameJa: "ルッカの城壁と旧市街",
         categoryIds: ["hill-town", "history", "landscape"],
         area: "Piana di Lucca",
         time: "3-5 hr",
@@ -883,11 +937,13 @@
         note: "Bike the walls",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Italy_-_Lucca_-_2.jpg/3840px-Italy_-_Lucca_-_2.jpg",
         info: "https://en.wikipedia.org/wiki/Lucca",
-        description: "A calm, flat, walkable town with broad Renaissance walls that work like a park loop. It is a good choice when the group wants charm without steep climbs."
+        description: "A calm, flat, walkable town with broad Renaissance walls that work like a park loop. It is a good choice when the group wants charm without steep climbs.",
+        descriptionJa: "落ち着いた平坦で歩きやすい町で、幅広いルネサンス期の城壁は公園の周回路のように使えます。急な坂なしで町の魅力を楽しみたい時に良い選択です。"
       },
       {
         id: "pisa",
         name: "Pisa Piazza dei Miracoli",
+        nameJa: "ピサのドゥオモ広場（奇跡の広場）",
         categoryIds: ["history", "sacred-art", "timed-entry"],
         area: "Pisa",
         time: "2-4 hr",
@@ -895,11 +951,13 @@
         note: "Tower ticket",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Italy_-_Pisa.jpg/3840px-Italy_-_Pisa.jpg",
         info: "https://whc.unesco.org/en/list/395",
-        description: "The Leaning Tower is the famous hook, but the cathedral, baptistery, cemetery, and lawn ensemble are the real reason to go. Rank higher if the western Tuscany route is already in play."
+        description: "The Leaning Tower is the famous hook, but the cathedral, baptistery, cemetery, and lawn ensemble are the real reason to go. Rank higher if the western Tuscany route is already in play.",
+        descriptionJa: "斜塔が有名な入口ですが、本当の見どころは大聖堂、洗礼堂、墓所、芝生を含む広場全体です。トスカーナ西部を回る予定があるなら、優先度を上げやすい場所です。"
       },
       {
         id: "chianti",
         name: "Chianti Classico Villages",
+        nameJa: "キアンティ・クラッシコの村々",
         categoryIds: ["landscape", "wine-food", "hill-town"],
         area: "Between Florence and Siena",
         time: "Half day",
@@ -907,11 +965,13 @@
         note: "Driving route",
         image: "https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_vicino_certaldo.jpg?width=1200",
         info: "https://en.wikipedia.org/wiki/Chianti",
-        description: "A flexible countryside route through vineyards, castles, and market towns such as Greve, Panzano, Radda, and Castellina. It is better as a drive-and-lunch day than a checklist."
+        description: "A flexible countryside route through vineyards, castles, and market towns such as Greve, Panzano, Radda, and Castellina. It is better as a drive-and-lunch day than a checklist.",
+        descriptionJa: "グレーヴェ、パンツァーノ、ラッダ、カステッリーナなどの村、ブドウ畑、城、市場町を柔軟に巡る田園ルートです。チェックリスト的に回るより、ドライブと昼食の日として楽しむのが合います。"
       },
       {
         id: "crete-senesi",
         name: "Crete Senesi & Monte Oliveto Maggiore",
+        nameJa: "クレーテ・セネージとモンテ・オリヴェート・マッジョーレ",
         categoryIds: ["landscape", "sacred-art", "history"],
         area: "South of Siena",
         time: "Half day",
@@ -919,11 +979,13 @@
         note: "Abbey frescoes",
         image: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Crete_Senesi_Monte_Oliveto.jpg",
         info: "https://en.wikipedia.org/wiki/Monte_Oliveto_Maggiore",
-        description: "Clay hills, long empty roads, and a Benedictine abbey famous for frescoes in the cloister. This is a strong countryside alternative to another busy town."
+        description: "Clay hills, long empty roads, and a Benedictine abbey famous for frescoes in the cloister. This is a strong countryside alternative to another busy town.",
+        descriptionJa: "粘土質の丘、長く静かな道、回廊のフレスコ画で知られるベネディクト会修道院を組み合わせる行き先です。混雑した町をもう一つ増やす代わりになる、力のある田園案です。"
       },
       {
         id: "san-galgano",
         name: "Abbey of San Galgano",
+        nameJa: "サン・ガルガーノ修道院",
         categoryIds: ["sacred-art", "history", "landscape"],
         area: "Val di Merse",
         time: "1.5-3 hr",
@@ -931,11 +993,13 @@
         note: "Roofless abbey",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/San_Galgano_Abbey_interior_03.jpg/3840px-San_Galgano_Abbey_interior_03.jpg",
         info: "https://en.wikipedia.org/wiki/Abbey_of_San_Galgano",
-        description: "A roofless Gothic abbey in open countryside, paired with the nearby Montesiepi chapel and its sword-in-stone tradition. It is memorable and easier than many hill towns."
+        description: "A roofless Gothic abbey in open countryside, paired with the nearby Montesiepi chapel and its sword-in-stone tradition. It is memorable and easier than many hill towns.",
+        descriptionJa: "開けた田園に立つ屋根のないゴシック修道院で、近くのモンテシエピ礼拝堂と石に刺さった剣の伝承も合わせて訪れます。印象に残りやすく、多くの丘上都市より負担が少ない場所です。"
       },
       {
         id: "pitigliano-sovana-sorano",
         name: "Pitigliano, Sovana & Sorano",
+        nameJa: "ピティリアーノ、ソヴァーナ、ソラーノ",
         categoryIds: ["hill-town", "history", "landscape"],
         area: "Southern Maremma",
         time: "Full day",
@@ -943,11 +1007,13 @@
         note: "Long drive",
         image: "https://upload.wikimedia.org/wikipedia/commons/f/fc/Pitigliano-veduta.JPG",
         info: "https://en.wikipedia.org/wiki/Pitigliano",
-        description: "Tuff-stone towns in southern Tuscany with Etruscan roads, dramatic cliffs, and a different feel from central Tuscany. Worth ranking high only if the itinerary can absorb the drive."
+        description: "Tuff-stone towns in southern Tuscany with Etruscan roads, dramatic cliffs, and a different feel from central Tuscany. Worth ranking high only if the itinerary can absorb the drive.",
+        descriptionJa: "南トスカーナの凝灰岩の町々で、エトルリアの道、劇的な崖、中央トスカーナとは違う雰囲気があります。移動時間を旅程に吸収できる場合だけ、高く評価する価値があります。"
       },
       {
         id: "saturnia",
         name: "Saturnia Hot Springs",
+        nameJa: "サトゥルニア温泉",
         categoryIds: ["landscape", "coast-nature"],
         area: "Southern Maremma",
         time: "2-4 hr",
@@ -955,11 +1021,13 @@
         note: "Early start",
         image: "https://upload.wikimedia.org/wikipedia/commons/4/41/Saturnia_Cascate_del_Mulino.jpg",
         info: "https://en.wikipedia.org/wiki/Saturnia",
-        description: "Outdoor thermal cascades with a strong visual payoff and a high crowd-risk profile. It pairs best with the southern Maremma towns rather than as a standalone detour."
+        description: "Outdoor thermal cascades with a strong visual payoff and a high crowd-risk profile. It pairs best with the southern Maremma towns rather than as a standalone detour.",
+        descriptionJa: "屋外の温泉滝で、見た目の満足度は高い一方、混雑リスクも高い場所です。単独の寄り道より、南マレンマの町々と組み合わせる方が向いています。"
       },
       {
         id: "maremma-park",
         name: "Maremma Regional Park",
+        nameJa: "マレンマ州立自然公園",
         categoryIds: ["coast-nature", "landscape"],
         area: "Grosseto coast",
         time: "Half-full day",
@@ -967,11 +1035,13 @@
         note: "Trails/beach",
         image: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Panorama_dalla_torre_Torre_di_Castelmarino.jpg",
         info: "https://en.wikipedia.org/wiki/Maremma_Regional_Park",
-        description: "A coastal nature option with pinewoods, wetlands, towers, beaches, and walking routes. It is best for a slower outdoor day and less useful if the trip is mostly art towns."
+        description: "A coastal nature option with pinewoods, wetlands, towers, beaches, and walking routes. It is best for a slower outdoor day and less useful if the trip is mostly art towns.",
+        descriptionJa: "松林、湿地、塔、海岸、散策ルートを楽しむ海沿いの自然案です。ゆっくりした屋外の日には良いですが、旅の中心が美術の町めぐりなら優先度は下がります。"
       },
       {
         id: "bolgheri",
         name: "Bolgheri & Viale dei Cipressi",
+        nameJa: "ボルゲリと糸杉の並木道",
         categoryIds: ["landscape", "wine-food", "coast-nature"],
         area: "Etruscan Coast",
         time: "Half day",
@@ -979,11 +1049,13 @@
         note: "Wine/coast",
         image: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Bolgheri_Castello_001.JPG",
         info: "https://en.wikipedia.org/wiki/Bolgheri",
-        description: "A small wine village reached by a famous cypress avenue, with coastal Tuscany nearby. It is a good west-coast contrast to Chianti and Brunello country."
+        description: "A small wine village reached by a famous cypress avenue, with coastal Tuscany nearby. It is a good west-coast contrast to Chianti and Brunello country.",
+        descriptionJa: "有名な糸杉の並木道の先にある小さなワイン村で、海沿いのトスカーナも近くにあります。キアンティやブルネッロの内陸ワイン産地と対比になる西海岸寄りの案です。"
       },
       {
         id: "elba",
         name: "Elba Island",
+        nameJa: "エルバ島",
         categoryIds: ["coast-nature", "history"],
         area: "Tuscan Archipelago",
         time: "Full day+",
@@ -991,11 +1063,13 @@
         note: "Ferry logistics",
         image: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Aerial_view_of_Elba_2.jpg",
         info: "https://en.wikipedia.org/wiki/Elba",
-        description: "An island option for sea views, beaches, villages, and Napoleonic history. It is probably too large for a casual side trip, but excellent if the itinerary includes coastal time."
+        description: "An island option for sea views, beaches, villages, and Napoleonic history. It is probably too large for a casual side trip, but excellent if the itinerary includes coastal time.",
+        descriptionJa: "海の眺め、ビーチ、村、ナポレオンゆかりの歴史を楽しむ島の案です。軽い寄り道には大きすぎますが、海沿いの時間を旅程に入れるならとても魅力的です。"
       },
       {
         id: "carrara",
         name: "Carrara Marble Quarries",
+        nameJa: "カッラーラ大理石採石場",
         categoryIds: ["landscape", "history"],
         area: "Apuan Alps",
         time: "Half day",
@@ -1003,11 +1077,13 @@
         note: "Tour advised",
         image: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Carrara.PNG",
         info: "https://en.wikipedia.org/wiki/Carrara_marble",
-        description: "White marble landscapes in the Apuan Alps, closely tied to Roman building, Renaissance sculpture, and modern stone work. It is a distinctive northern-Tuscany industrial landscape."
+        description: "White marble landscapes in the Apuan Alps, closely tied to Roman building, Renaissance sculpture, and modern stone work. It is a distinctive northern-Tuscany industrial landscape.",
+        descriptionJa: "アプアーネ山脈に広がる白い大理石の風景で、ローマ建築、ルネサンス彫刻、現代の石材加工と深く結びついています。北トスカーナならではの産業景観です。"
       },
       {
         id: "arezzo",
         name: "Arezzo & Piero della Francesca",
+        nameJa: "アレッツォとピエロ・デッラ・フランチェスカ",
         categoryIds: ["history", "sacred-art", "hill-town"],
         area: "Arezzo area",
         time: "Half day",
@@ -1015,11 +1091,13 @@
         note: "Fresco cycle",
         image: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Piazza_Grande%2C_Arezzo.JPG",
         info: "https://en.wikipedia.org/wiki/Arezzo",
-        description: "A quieter art city anchored by Piazza Grande and Piero della Francesca's frescoes in San Francesco. It can be easier to enjoy than the most crowded marquee stops."
+        description: "A quieter art city anchored by Piazza Grande and Piero della Francesca's frescoes in San Francesco. It can be easier to enjoy than the most crowded marquee stops.",
+        descriptionJa: "グランデ広場とサン・フランチェスコ聖堂のピエロ・デッラ・フランチェスカのフレスコ画を軸にした、比較的静かな美術都市です。混雑の激しい有名スポットより楽しみやすい場合があります。"
       },
       {
         id: "cortona",
         name: "Cortona",
+        nameJa: "コルトーナ",
         categoryIds: ["hill-town", "history", "landscape"],
         area: "Valdichiana Aretina",
         time: "3-5 hr",
@@ -1027,11 +1105,13 @@
         note: "Steep climb",
         image: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Cortona-vista01.jpg",
         info: "https://en.wikipedia.org/wiki/Cortona",
-        description: "A steep hillside town with Etruscan depth, wide views over the Val di Chiana, and a strong slow-stroll appeal. The climb is part of the decision."
+        description: "A steep hillside town with Etruscan depth, wide views over the Val di Chiana, and a strong slow-stroll appeal. The climb is part of the decision.",
+        descriptionJa: "急斜面にある町で、エトルリアの歴史、ヴァル・ディ・キアーナの広い眺め、ゆっくり歩く魅力があります。坂を登ること自体が、行くかどうかの判断材料になります。"
       },
       {
         id: "vinci",
         name: "Vinci & Leonardo Country",
+        nameJa: "ヴィンチとレオナルドゆかりの地",
         categoryIds: ["history", "landscape"],
         area: "Montalbano",
         time: "2-4 hr",
@@ -1039,11 +1119,13 @@
         note: "Museum village",
         image: "https://commons.wikimedia.org/wiki/Special:FilePath/Vinci,_Tuscany,_Italy_(1).JPG?width=1200",
         info: "https://en.wikipedia.org/wiki/Vinci,_Tuscany",
-        description: "A smaller stop centered on Leonardo's birthplace area, museum exhibits, and olive-grove countryside. It is best if invention history or a Florence-to-Lucca route makes it convenient."
+        description: "A smaller stop centered on Leonardo's birthplace area, museum exhibits, and olive-grove countryside. It is best if invention history or a Florence-to-Lucca route makes it convenient.",
+        descriptionJa: "レオナルドの生誕地周辺、博物館展示、オリーブ畑の田園を中心にした小さめの立ち寄り先です。発明の歴史に興味がある場合や、フィレンツェからルッカ方面の動線に合う場合に向いています。"
       },
       {
         id: "uffizi",
         name: "Uffizi Gallery",
+        nameJa: "ウフィツィ美術館",
         categoryIds: ["florence", "sacred-art", "history", "timed-entry"],
         area: "Florence",
         time: "2-4 hr",
@@ -1051,11 +1133,13 @@
         note: "Reserve ticket",
         image: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Florence%2C_Italy_-_panoramio_%28125%29.jpg",
         info: "https://www.uffizi.it/en/the-uffizi",
-        description: "The highest-density Renaissance painting stop in Florence, with Botticelli, Leonardo, Michelangelo, Raphael, Titian, and more. It needs deliberate time and ticket planning."
+        description: "The highest-density Renaissance painting stop in Florence, with Botticelli, Leonardo, Michelangelo, Raphael, Titian, and more. It needs deliberate time and ticket planning.",
+        descriptionJa: "ボッティチェリ、レオナルド、ミケランジェロ、ラファエロ、ティツィアーノなどを含む、フィレンツェで最も密度の高いルネサンス絵画の目的地です。時間配分とチケット計画が必要です。"
       },
       {
         id: "florence-duomo",
         name: "Florence Duomo Complex",
+        nameJa: "フィレンツェのドゥオモ複合施設",
         categoryIds: ["florence", "sacred-art", "history", "timed-entry"],
         area: "Florence",
         time: "2-5 hr",
@@ -1063,11 +1147,13 @@
         note: "Pass options",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Cattedrale_di_Santa_Maria_del_Fiore_%E2%80%93_Il_Duomo_di_Firenze.jpg/3840px-Cattedrale_di_Santa_Maria_del_Fiore_%E2%80%93_Il_Duomo_di_Firenze.jpg",
         info: "https://duomo.firenze.it/en/home",
-        description: "Santa Maria del Fiore, Brunelleschi's dome, Giotto's bell tower, the Baptistery, and the Opera del Duomo Museum form a full cluster. Rank it by appetite for stairs and ticket logistics."
+        description: "Santa Maria del Fiore, Brunelleschi's dome, Giotto's bell tower, the Baptistery, and the Opera del Duomo Museum form a full cluster. Rank it by appetite for stairs and ticket logistics.",
+        descriptionJa: "サンタ・マリア・デル・フィオーレ、ブルネレスキのクーポラ、ジョットの鐘楼、洗礼堂、ドゥオモ付属博物館がまとまった大きな見学エリアです。階段とチケット手配への意欲で優先度が変わります。"
       },
       {
         id: "accademia",
         name: "Accademia Gallery & Michelangelo's David",
+        nameJa: "アカデミア美術館とミケランジェロのダビデ",
         categoryIds: ["florence", "sacred-art", "timed-entry"],
         area: "Florence",
         time: "1-2 hr",
@@ -1075,11 +1161,13 @@
         note: "Timed ticket",
         image: "https://upload.wikimedia.org/wikipedia/commons/d/d5/David_at_the_Galleria_dell%27Accademia_%2861351%29.jpg",
         info: "https://www.galleriaaccademiafirenze.it/en/",
-        description: "A focused visit built around David, Michelangelo's unfinished Prisoners, and a compact museum route. It is easier to fit than the Uffizi but still demands reservation discipline."
+        description: "A focused visit built around David, Michelangelo's unfinished Prisoners, and a compact museum route. It is easier to fit than the Uffizi but still demands reservation discipline.",
+        descriptionJa: "ダビデ像、ミケランジェロの未完の囚人像、比較的コンパクトな展示を中心にした見学です。ウフィツィより組み込みやすい一方、予約はきちんと考える必要があります。"
       },
       {
         id: "pitti-boboli",
         name: "Pitti Palace & Boboli Gardens",
+        nameJa: "ピッティ宮殿とボーボリ庭園",
         categoryIds: ["florence", "sacred-art", "landscape", "timed-entry"],
         area: "Florence",
         time: "2-5 hr",
@@ -1087,11 +1175,13 @@
         note: "Oltrarno",
         image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Jard%C3%ADn_de_B%C3%B3boli%2C_Florencia%2C_Italia%2C_2022-09-19%2C_DD_26.jpg",
         info: "https://www.uffizi.it/en/pitti-palace",
-        description: "A Medici grand-ducal complex on the Oltrarno side, useful if the group wants court collections, garden terraces, and a break from the densest central streets."
+        description: "A Medici grand-ducal complex on the Oltrarno side, useful if the group wants court collections, garden terraces, and a break from the densest central streets.",
+        descriptionJa: "オルトラルノ側にあるメディチ家の大公宮殿と庭園の複合施設です。宮廷コレクション、庭園のテラス、中心部の混雑から少し離れる時間を求める場合に向いています。"
       },
       {
         id: "santa-croce-oltrarno",
         name: "Santa Croce & Oltrarno Walk",
+        nameJa: "サンタ・クローチェとオルトラルノ散策",
         categoryIds: ["florence", "sacred-art", "history"],
         area: "Florence",
         time: "2-4 hr",
@@ -1099,7 +1189,8 @@
         note: "Walkable pair",
         image: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Basilica_di_Santa_Croce_%2812437%29.jpg",
         info: "https://www.santacroceopera.it/en/",
-        description: "A Florence route for tombs, frescoes, artisan streets, bridges, and quieter Oltrarno texture. It is a good city choice when the group wants place and movement more than another major museum."
+        description: "A Florence route for tombs, frescoes, artisan streets, bridges, and quieter Oltrarno texture. It is a good city choice when the group wants place and movement more than another major museum.",
+        descriptionJa: "墓所、フレスコ画、職人街、橋、静かなオルトラルノの空気を組み合わせるフィレンツェの散策ルートです。大きな美術館をもう一つ増やすより、場所の雰囲気と歩く時間を重視する時に良い選択です。"
       }
     ];
 
@@ -1552,6 +1643,7 @@
             <span class="top-score">${formatScore(destination.sortScore)}</span>
             <span>
               <span class="top-name">${escapeHtml(destination.name)}</span>
+              ${destination.nameJa ? `<span class="top-name-ja" lang="ja">${escapeHtml(destination.nameJa)}</span>` : ""}
               <span class="top-detail">${escapeHtml(detail)}</span>
             </span>
           </li>
@@ -1594,7 +1686,8 @@
         const scoreText = people
           .map((person) => `${person.label}: ${scores[person.id] || "-"}`)
           .join(" | ");
-        return `${rank}. Combined ${formatScore(destination.sortScore)} - ${destination.name} (${scoreText}; ${destination.area}, ${destination.time})`;
+        const nameText = destination.nameJa ? `${destination.name} / ${destination.nameJa}` : destination.name;
+        return `${rank}. Combined ${formatScore(destination.sortScore)} - ${nameText} (${scoreText}; ${destination.area}, ${destination.time})`;
       });
 
       return [
@@ -1680,6 +1773,7 @@
               <div class="card-head">
                 <div>
                   <h2>${escapeHtml(destination.name)}</h2>
+                  ${destination.nameJa ? `<p class="title-ja" lang="ja">${escapeHtml(destination.nameJa)}</p>` : ""}
                 </div>
                 <div class="rank-grid">
                   ${rankControls}
@@ -1690,6 +1784,7 @@
 
               <div class="copy">
                 <p>${escapeHtml(destination.description)}</p>
+                ${destination.descriptionJa ? `<p class="description-ja" lang="ja">${escapeHtml(destination.descriptionJa)}</p>` : ""}
               </div>
 
               <div class="source-row">
