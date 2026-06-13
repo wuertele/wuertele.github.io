@@ -1,0 +1,1815 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tuscany-trip-planner</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5efe3;
+      --paper-strong: #fffaf1;
+      --ink: #20221d;
+      --muted: #68695f;
+      --line: #d6c7ae;
+      --cypress: #234d36;
+      --cypress-2: #38684a;
+      --terra: #ad5039;
+      --saffron: #bf8b32;
+      --sea: #317184;
+      --lavender: #756590;
+      --olive-soft: #edf2e8;
+      --white: #fffdf7;
+      --shadow: 0 18px 38px rgba(51, 44, 33, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      letter-spacing: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(35, 77, 54, 0.08) 0 1px, transparent 1px 100%),
+        linear-gradient(0deg, rgba(173, 80, 57, 0.06) 0 1px, transparent 1px 100%),
+        linear-gradient(128deg, #fbf7ee 0%, var(--paper) 46%, #e8f0ed 100%);
+      background-size: 48px 48px, 48px 48px, auto;
+      font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    select {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 18px 0 42px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.58fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 16px;
+    }
+
+    .title-block {
+      position: relative;
+      overflow: hidden;
+      min-height: 268px;
+      padding: 24px;
+      color: var(--white);
+      background:
+        linear-gradient(105deg, rgba(22, 36, 27, 0.94), rgba(35, 77, 54, 0.72), rgba(173, 80, 57, 0.4)),
+        url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/I_cipressi_della_Val_D%27Orcia.jpg/1600px-I_cipressi_della_Val_D%27Orcia.jpg") center / cover;
+      border: 1px solid rgba(255, 253, 247, 0.24);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .title-block::after {
+      position: absolute;
+      inset: auto 0 0;
+      height: 7px;
+      content: "";
+      background: linear-gradient(90deg, var(--terra), var(--saffron), var(--cypress-2), var(--sea), var(--lavender));
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: #f3d990;
+      font-size: 0.87rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 3rem;
+      line-height: 0.98;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      max-width: 690px;
+      margin: 16px 0 0;
+      color: rgba(255, 253, 247, 0.9);
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .summary-panel {
+      display: flex;
+      min-height: 268px;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary-top {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .summary-title {
+      margin: 0;
+      color: var(--cypress);
+      font-size: 0.84rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .count-pill {
+      min-width: 172px;
+      padding: 6px 10px;
+      color: var(--white);
+      background: var(--cypress);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .top-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .top-list li,
+    .empty-state {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      min-height: 40px;
+      padding: 8px 9px;
+      background: #f0eadb;
+      border: 1px solid rgba(214, 199, 174, 0.94);
+      border-radius: 8px;
+    }
+
+    .top-score {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 26px;
+      color: var(--white);
+      background: var(--terra);
+      border-radius: 7px;
+      font-weight: 900;
+    }
+
+    .top-name {
+      overflow: hidden;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .top-detail {
+      display: block;
+      overflow: hidden;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      grid-template-columns: 1fr;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .panel-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .action-button {
+      flex: 1 1 112px;
+      min-height: 42px;
+      padding: 9px 12px;
+      color: var(--cypress);
+      background: var(--olive-soft);
+      border: 1px solid rgba(35, 77, 54, 0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .action-button:hover {
+      background: #dfe9d8;
+    }
+
+    .status-line {
+      min-height: 20px;
+      margin: -4px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .control-panel {
+      display: grid;
+      grid-template-columns: minmax(190px, 0.24fr) minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: rgba(255, 253, 247, 0.9);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 22px rgba(51, 44, 33, 0.08);
+    }
+
+    .control-title {
+      margin: 0 0 3px;
+      color: var(--cypress);
+      font-size: 0.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .control-count {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .control-groups {
+      display: grid;
+      gap: 9px;
+      justify-items: end;
+    }
+
+    .sort-buttons,
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: flex-end;
+    }
+
+    .sort-button,
+    .filter-button {
+      min-height: 36px;
+      padding: 7px 10px;
+      color: var(--cypress);
+      background: var(--paper-strong);
+      border: 1px solid rgba(35, 77, 54, 0.18);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 900;
+    }
+
+    .sort-button:hover,
+    .filter-button:hover {
+      background: #f3e5d3;
+    }
+
+    .sort-button[aria-pressed="true"],
+    .filter-button[aria-pressed="true"] {
+      color: var(--white);
+      background: var(--terra);
+      border-color: rgba(173, 80, 57, 0.42);
+    }
+
+    .destination-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .destination-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(260px, 0.86fr) minmax(0, 1.14fr);
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 12px 26px rgba(51, 44, 33, 0.1);
+    }
+
+    .destination-card.is-pulse {
+      animation: pulseCard 420ms ease-out;
+    }
+
+    @keyframes pulseCard {
+      0% {
+        outline: 0 solid rgba(173, 80, 57, 0);
+      }
+
+      40% {
+        outline: 6px solid rgba(173, 80, 57, 0.18);
+      }
+
+      100% {
+        outline: 0 solid rgba(173, 80, 57, 0);
+      }
+    }
+
+    .score-ribbon {
+      position: absolute;
+      z-index: 2;
+      top: 12px;
+      left: 12px;
+      display: grid;
+      min-width: 58px;
+      min-height: 42px;
+      padding: 6px 9px;
+      color: var(--white);
+      background: var(--cypress);
+      border: 1px solid rgba(255, 253, 247, 0.28);
+      border-radius: 8px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .score-ribbon.is-empty {
+      color: rgba(255, 253, 247, 0.78);
+      background: rgba(22, 36, 27, 0.78);
+    }
+
+    .score-ribbon small {
+      display: block;
+      margin-top: 1px;
+      font-size: 0.62rem;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .photo {
+      position: relative;
+      min-height: 100%;
+      margin: 0;
+      background: var(--cypress);
+    }
+
+    .photo::before {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(255, 253, 247, 0.32);
+      content: attr(data-fallback);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 5rem;
+      font-weight: 800;
+    }
+
+    .photo img {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 270px;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .photo.is-missing img {
+      opacity: 0;
+    }
+
+    .photo-credit {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      padding: 5px 7px;
+      color: var(--white);
+      background: rgba(32, 34, 29, 0.7);
+      border-radius: 7px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .card-body {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      gap: 12px;
+      padding: 18px;
+    }
+
+    .card-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(276px, 360px);
+      gap: 14px;
+      align-items: start;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--cypress);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.54rem;
+      line-height: 1.08;
+    }
+
+    .rank-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .rank-control {
+      display: grid;
+      gap: 6px;
+      justify-items: stretch;
+    }
+
+    .rank-control label {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .ranking-select {
+      width: 100%;
+      min-height: 42px;
+      padding: 8px 32px 8px 10px;
+      color: var(--ink);
+      background: var(--paper-strong);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .ranking-select:focus {
+      outline: 3px solid rgba(173, 80, 57, 0.28);
+      outline-offset: 2px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-height: 31px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .meta li {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 8px;
+      color: var(--cypress);
+      background: #edf4eb;
+      border: 1px solid rgba(35, 77, 54, 0.15);
+      border-radius: 7px;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .meta li:nth-child(2n) {
+      color: #74411f;
+      background: #fbefdf;
+      border-color: rgba(191, 139, 50, 0.2);
+    }
+
+    .meta li:nth-child(3n) {
+      color: var(--sea);
+      background: #eaf4f5;
+      border-color: rgba(49, 113, 132, 0.16);
+    }
+
+    .copy {
+      display: grid;
+      gap: 9px;
+      margin-top: auto;
+    }
+
+    .copy p {
+      margin: 0;
+      color: #2e3029;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .source-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      padding-top: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .source-row a {
+      color: var(--cypress);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      justify-content: space-between;
+      margin-top: 18px;
+      padding: 14px 2px 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .footer a {
+      color: var(--cypress);
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        width: min(100% - 18px, 700px);
+        padding-top: 9px;
+      }
+
+      .masthead,
+      .destination-card {
+        grid-template-columns: 1fr;
+      }
+
+      .title-block,
+      .summary-panel {
+        min-height: unset;
+      }
+
+      .title-block {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2.22rem;
+        line-height: 1;
+      }
+
+      .subtitle {
+        font-size: 0.96rem;
+      }
+
+      .control-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .control-groups,
+      .sort-buttons,
+      .filter-buttons {
+        justify-items: stretch;
+        justify-content: flex-start;
+      }
+
+      .photo img {
+        min-height: 230px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .card-head,
+      .rank-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rank-control {
+        grid-template-columns: minmax(0, 1fr) minmax(118px, 142px);
+        align-items: center;
+      }
+
+      .panel-actions {
+        flex-direction: column;
+      }
+
+      .sort-buttons,
+      .filter-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .sort-button,
+      .filter-button {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 1.92rem;
+      }
+
+      .count-pill {
+        min-width: 146px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .app {
+        width: 100%;
+        padding: 0;
+      }
+
+      .masthead {
+        display: block;
+      }
+
+      .title-block,
+      .summary-panel,
+      .destination-card {
+        box-shadow: none;
+      }
+
+      .title-block {
+        min-height: unset;
+        color: var(--ink);
+        background: #fff;
+      }
+
+      .subtitle {
+        color: var(--muted);
+      }
+
+      .panel-actions,
+      .control-panel,
+      .photo-credit {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="masthead">
+      <section class="title-block" aria-labelledby="page-title">
+        <p class="kicker">Tuscany - countryside first - 3 raters</p>
+        <h1 id="page-title">tuscany-trip-planner</h1>
+        <p class="subtitle">A shared ranking board for Tuscan hill towns, cypress roads, abbeys, wine country, coast and island options, plus a focused set of Florence sights.</p>
+      </section>
+
+      <aside class="summary-panel" aria-label="Ranked destination summary">
+        <div class="summary-top">
+          <p class="summary-title">Combined Top Choices</p>
+          <span class="count-pill" id="ranked-count">0 David / 0 Kentaro / 0 Tomoko</span>
+        </div>
+        <ol class="top-list" id="top-list"></ol>
+        <div class="panel-actions">
+          <button class="action-button" id="share-results" type="button">Share results</button>
+          <button class="action-button" id="copy-results" type="button">Copy results</button>
+          <button class="action-button" id="email-results" type="button">Email results</button>
+          <button class="action-button" id="reset-ranks" type="button">Reset ranks</button>
+          <button class="action-button" id="print-page" type="button">Print</button>
+        </div>
+        <p class="status-line" id="status-line" aria-live="polite"></p>
+      </aside>
+    </header>
+
+    <section class="control-panel" aria-labelledby="control-title">
+      <div>
+        <p class="control-title" id="control-title">View</p>
+        <p class="control-count" id="filter-count">Showing all destinations</p>
+      </div>
+      <div class="control-groups">
+        <div class="sort-buttons" id="sort-buttons" role="group" aria-label="Sort order"></div>
+        <div class="filter-buttons" id="filter-buttons" role="group" aria-label="Destination categories"></div>
+      </div>
+    </section>
+
+    <section class="destination-list" id="destination-list" aria-live="polite"></section>
+
+    <footer class="footer">
+      <span>Opening hours, ticket rules, and driving constraints should be rechecked near the trip date.</span>
+      <span>
+        <a href="https://www.visittuscany.com/en/" target="_blank" rel="noopener">Visit Tuscany</a>
+        |
+        <a href="https://whc.unesco.org/en/statesparties/it" target="_blank" rel="noopener">UNESCO Italy</a>
+        |
+        <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons photos</a>
+      </span>
+    </footer>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "tuscany-trip-rankings-v1";
+    const HASH_PREFIX = "tuscany-scores=";
+    const SUPABASE_URL = "https://hxntvwioltnctdoegefw.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_mnCZ7xzGXky1G6gvFYp1BQ_fKL5OvH-";
+    const SUPABASE_TABLE = "trip_rankings";
+    const SUPABASE_TRIP_ID = "tuscany-trip-planner";
+    const SYNC_POLL_MS = 15000;
+
+    const people = [
+      { id: "david", label: "David", code: "d" },
+      { id: "kentaro", label: "Kentaro", code: "k" },
+      { id: "tomoko", label: "Tomoko", code: "t" }
+    ];
+
+    const codeToPerson = Object.fromEntries(people.map((person) => [person.code, person.id]));
+    const travelerText = people.map((person) => person.label).join(", ");
+
+    const sortDefinitions = [
+      { id: "combined", label: "Combined" },
+      ...people.map((person) => ({ id: person.id, label: person.label }))
+    ];
+
+    const categoryDefinitions = [
+      { id: "all", label: "All" },
+      { id: "landscape", label: "Landscapes" },
+      { id: "hill-town", label: "Hill Towns" },
+      { id: "wine-food", label: "Wine & Food" },
+      { id: "sacred-art", label: "Sacred Art" },
+      { id: "history", label: "History" },
+      { id: "coast-nature", label: "Coast & Nature" },
+      { id: "florence", label: "Florence" },
+      { id: "timed-entry", label: "Timed Entry" }
+    ];
+
+    const destinations = [
+      {
+        id: "val-d-orcia",
+        name: "Val d'Orcia Scenic Drive",
+        categoryIds: ["landscape", "hill-town"],
+        area: "South of Siena",
+        time: "Half day",
+        effort: "Medium",
+        note: "Best by car",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/I_cipressi_della_Val_D%27Orcia.jpg/3840px-I_cipressi_della_Val_D%27Orcia.jpg",
+        info: "https://whc.unesco.org/en/list/1026",
+        description: "The classic Tuscan landscape of cypress lanes, cultivated hills, stone farmhouses, and small towns. It works best as a slow loop rather than a single stop."
+      },
+      {
+        id: "pienza",
+        name: "Pienza",
+        categoryIds: ["hill-town", "history", "wine-food"],
+        area: "Val d'Orcia",
+        time: "2-4 hr",
+        effort: "Low",
+        note: "Pecorino stop",
+        image: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Pienza_italy.jpg",
+        info: "https://whc.unesco.org/en/list/789",
+        description: "A compact Renaissance hill town with an elegant main square, panoramic walls, and many pecorino shops. It is one of the easiest Val d'Orcia towns to enjoy without rushing."
+      },
+      {
+        id: "montalcino",
+        name: "Montalcino & Brunello Country",
+        categoryIds: ["hill-town", "wine-food", "landscape"],
+        area: "Val d'Orcia",
+        time: "Half day",
+        effort: "Medium",
+        note: "Book tastings",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Montalcino-_panoramio.jpg/3840px-Montalcino-_panoramio.jpg",
+        info: "https://en.wikipedia.org/wiki/Montalcino",
+        description: "A fortified wine town with views over the Orcia and Ombrone valleys. Rank it high if a Brunello tasting, an enoteca visit, or a lunch with a view matters."
+      },
+      {
+        id: "montepulciano",
+        name: "Montepulciano",
+        categoryIds: ["hill-town", "wine-food", "history"],
+        area: "Valdichiana Senese",
+        time: "3-5 hr",
+        effort: "High",
+        note: "Steep streets",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/1_montepulciano_aerial_2024.jpg/3840px-1_montepulciano_aerial_2024.jpg",
+        info: "https://en.wikipedia.org/wiki/Montepulciano",
+        description: "A dramatic ridge town with Renaissance palaces, wine cellars in the center, and a rewarding climb to Piazza Grande. It is beautiful but more physically demanding than Pienza."
+      },
+      {
+        id: "bagno-vignoni",
+        name: "Bagno Vignoni",
+        categoryIds: ["hill-town", "landscape"],
+        area: "Val d'Orcia",
+        time: "1-2 hr",
+        effort: "Low",
+        note: "Thermal village",
+        image: "https://upload.wikimedia.org/wikipedia/commons/8/89/Chiesa_bagno_vignoni.jpg",
+        info: "https://en.wikipedia.org/wiki/Bagno_Vignoni",
+        description: "A tiny village built around a steaming thermal pool in place of a normal piazza. It is a good short atmospheric stop between Pienza, San Quirico, and Montalcino."
+      },
+      {
+        id: "san-gimignano",
+        name: "San Gimignano",
+        categoryIds: ["hill-town", "history", "timed-entry"],
+        area: "Val d'Elsa",
+        time: "3-5 hr",
+        effort: "Medium",
+        note: "Go early",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/1_Aerial_pano_san_gimignano_%282%29a.jpg/3840px-1_Aerial_pano_san_gimignano_%282%29a.jpg",
+        info: "https://whc.unesco.org/en/list/550",
+        description: "The tower skyline is unforgettable, and the town is easy to pair with Volterra or a Chianti route. Crowds can be intense, so timing matters more than raw visit length."
+      },
+      {
+        id: "volterra",
+        name: "Volterra",
+        categoryIds: ["hill-town", "history"],
+        area: "Val di Cecina",
+        time: "3-5 hr",
+        effort: "Medium",
+        note: "Etruscan roots",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Volterra_from_above._June_2024.jpg/3840px-Volterra_from_above._June_2024.jpg",
+        info: "https://en.wikipedia.org/wiki/Volterra",
+        description: "A layered Etruscan, Roman, medieval, and alabaster town that feels rougher-edged than San Gimignano. It rewards people who like archaeology and less polished hill-town wandering."
+      },
+      {
+        id: "monteriggioni",
+        name: "Monteriggioni",
+        categoryIds: ["hill-town", "history"],
+        area: "Near Siena",
+        time: "1-2 hr",
+        effort: "Low",
+        note: "Walled town",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Monteriggioni_dall%27alto.jpg/3840px-Monteriggioni_dall%27alto.jpg",
+        info: "https://en.wikipedia.org/wiki/Monteriggioni",
+        description: "A small intact ring of walls and towers, useful as a short stop on the way to Siena or San Gimignano. It is not a full day, but it is very legible and photogenic."
+      },
+      {
+        id: "siena",
+        name: "Siena Historic Center",
+        categoryIds: ["hill-town", "history", "sacred-art", "timed-entry"],
+        area: "Siena",
+        time: "Half-full day",
+        effort: "High",
+        note: "Duomo booking",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg/3840px-Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg",
+        info: "https://whc.unesco.org/en/list/717",
+        description: "A larger city stop, but still essential if medieval urban form, Piazza del Campo, and the cathedral complex are priorities. It competes with Florence for dense art-and-architecture time."
+      },
+      {
+        id: "lucca",
+        name: "Lucca Walls & Old Town",
+        categoryIds: ["hill-town", "history", "landscape"],
+        area: "Piana di Lucca",
+        time: "3-5 hr",
+        effort: "Low",
+        note: "Bike the walls",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Italy_-_Lucca_-_2.jpg/3840px-Italy_-_Lucca_-_2.jpg",
+        info: "https://en.wikipedia.org/wiki/Lucca",
+        description: "A calm, flat, walkable town with broad Renaissance walls that work like a park loop. It is a good choice when the group wants charm without steep climbs."
+      },
+      {
+        id: "pisa",
+        name: "Pisa Piazza dei Miracoli",
+        categoryIds: ["history", "sacred-art", "timed-entry"],
+        area: "Pisa",
+        time: "2-4 hr",
+        effort: "Low",
+        note: "Tower ticket",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Italy_-_Pisa.jpg/3840px-Italy_-_Pisa.jpg",
+        info: "https://whc.unesco.org/en/list/395",
+        description: "The Leaning Tower is the famous hook, but the cathedral, baptistery, cemetery, and lawn ensemble are the real reason to go. Rank higher if the western Tuscany route is already in play."
+      },
+      {
+        id: "chianti",
+        name: "Chianti Classico Villages",
+        categoryIds: ["landscape", "wine-food", "hill-town"],
+        area: "Between Florence and Siena",
+        time: "Half day",
+        effort: "Medium",
+        note: "Driving route",
+        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_vicino_certaldo.jpg?width=1200",
+        info: "https://en.wikipedia.org/wiki/Chianti",
+        description: "A flexible countryside route through vineyards, castles, and market towns such as Greve, Panzano, Radda, and Castellina. It is better as a drive-and-lunch day than a checklist."
+      },
+      {
+        id: "crete-senesi",
+        name: "Crete Senesi & Monte Oliveto Maggiore",
+        categoryIds: ["landscape", "sacred-art", "history"],
+        area: "South of Siena",
+        time: "Half day",
+        effort: "Medium",
+        note: "Abbey frescoes",
+        image: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Crete_Senesi_Monte_Oliveto.jpg",
+        info: "https://en.wikipedia.org/wiki/Monte_Oliveto_Maggiore",
+        description: "Clay hills, long empty roads, and a Benedictine abbey famous for frescoes in the cloister. This is a strong countryside alternative to another busy town."
+      },
+      {
+        id: "san-galgano",
+        name: "Abbey of San Galgano",
+        categoryIds: ["sacred-art", "history", "landscape"],
+        area: "Val di Merse",
+        time: "1.5-3 hr",
+        effort: "Low",
+        note: "Roofless abbey",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/San_Galgano_Abbey_interior_03.jpg/3840px-San_Galgano_Abbey_interior_03.jpg",
+        info: "https://en.wikipedia.org/wiki/Abbey_of_San_Galgano",
+        description: "A roofless Gothic abbey in open countryside, paired with the nearby Montesiepi chapel and its sword-in-stone tradition. It is memorable and easier than many hill towns."
+      },
+      {
+        id: "pitigliano-sovana-sorano",
+        name: "Pitigliano, Sovana & Sorano",
+        categoryIds: ["hill-town", "history", "landscape"],
+        area: "Southern Maremma",
+        time: "Full day",
+        effort: "High",
+        note: "Long drive",
+        image: "https://upload.wikimedia.org/wikipedia/commons/f/fc/Pitigliano-veduta.JPG",
+        info: "https://en.wikipedia.org/wiki/Pitigliano",
+        description: "Tuff-stone towns in southern Tuscany with Etruscan roads, dramatic cliffs, and a different feel from central Tuscany. Worth ranking high only if the itinerary can absorb the drive."
+      },
+      {
+        id: "saturnia",
+        name: "Saturnia Hot Springs",
+        categoryIds: ["landscape", "coast-nature"],
+        area: "Southern Maremma",
+        time: "2-4 hr",
+        effort: "Medium",
+        note: "Early start",
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/41/Saturnia_Cascate_del_Mulino.jpg",
+        info: "https://en.wikipedia.org/wiki/Saturnia",
+        description: "Outdoor thermal cascades with a strong visual payoff and a high crowd-risk profile. It pairs best with the southern Maremma towns rather than as a standalone detour."
+      },
+      {
+        id: "maremma-park",
+        name: "Maremma Regional Park",
+        categoryIds: ["coast-nature", "landscape"],
+        area: "Grosseto coast",
+        time: "Half-full day",
+        effort: "High",
+        note: "Trails/beach",
+        image: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Panorama_dalla_torre_Torre_di_Castelmarino.jpg",
+        info: "https://en.wikipedia.org/wiki/Maremma_Regional_Park",
+        description: "A coastal nature option with pinewoods, wetlands, towers, beaches, and walking routes. It is best for a slower outdoor day and less useful if the trip is mostly art towns."
+      },
+      {
+        id: "bolgheri",
+        name: "Bolgheri & Viale dei Cipressi",
+        categoryIds: ["landscape", "wine-food", "coast-nature"],
+        area: "Etruscan Coast",
+        time: "Half day",
+        effort: "Medium",
+        note: "Wine/coast",
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Bolgheri_Castello_001.JPG",
+        info: "https://en.wikipedia.org/wiki/Bolgheri",
+        description: "A small wine village reached by a famous cypress avenue, with coastal Tuscany nearby. It is a good west-coast contrast to Chianti and Brunello country."
+      },
+      {
+        id: "elba",
+        name: "Elba Island",
+        categoryIds: ["coast-nature", "history"],
+        area: "Tuscan Archipelago",
+        time: "Full day+",
+        effort: "High",
+        note: "Ferry logistics",
+        image: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Aerial_view_of_Elba_2.jpg",
+        info: "https://en.wikipedia.org/wiki/Elba",
+        description: "An island option for sea views, beaches, villages, and Napoleonic history. It is probably too large for a casual side trip, but excellent if the itinerary includes coastal time."
+      },
+      {
+        id: "carrara",
+        name: "Carrara Marble Quarries",
+        categoryIds: ["landscape", "history"],
+        area: "Apuan Alps",
+        time: "Half day",
+        effort: "Medium",
+        note: "Tour advised",
+        image: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Carrara.PNG",
+        info: "https://en.wikipedia.org/wiki/Carrara_marble",
+        description: "White marble landscapes in the Apuan Alps, closely tied to Roman building, Renaissance sculpture, and modern stone work. It is a distinctive northern-Tuscany industrial landscape."
+      },
+      {
+        id: "arezzo",
+        name: "Arezzo & Piero della Francesca",
+        categoryIds: ["history", "sacred-art", "hill-town"],
+        area: "Arezzo area",
+        time: "Half day",
+        effort: "Medium",
+        note: "Fresco cycle",
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Piazza_Grande%2C_Arezzo.JPG",
+        info: "https://en.wikipedia.org/wiki/Arezzo",
+        description: "A quieter art city anchored by Piazza Grande and Piero della Francesca's frescoes in San Francesco. It can be easier to enjoy than the most crowded marquee stops."
+      },
+      {
+        id: "cortona",
+        name: "Cortona",
+        categoryIds: ["hill-town", "history", "landscape"],
+        area: "Valdichiana Aretina",
+        time: "3-5 hr",
+        effort: "High",
+        note: "Steep climb",
+        image: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Cortona-vista01.jpg",
+        info: "https://en.wikipedia.org/wiki/Cortona",
+        description: "A steep hillside town with Etruscan depth, wide views over the Val di Chiana, and a strong slow-stroll appeal. The climb is part of the decision."
+      },
+      {
+        id: "vinci",
+        name: "Vinci & Leonardo Country",
+        categoryIds: ["history", "landscape"],
+        area: "Montalbano",
+        time: "2-4 hr",
+        effort: "Medium",
+        note: "Museum village",
+        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Vinci,_Tuscany,_Italy_(1).JPG?width=1200",
+        info: "https://en.wikipedia.org/wiki/Vinci,_Tuscany",
+        description: "A smaller stop centered on Leonardo's birthplace area, museum exhibits, and olive-grove countryside. It is best if invention history or a Florence-to-Lucca route makes it convenient."
+      },
+      {
+        id: "uffizi",
+        name: "Uffizi Gallery",
+        categoryIds: ["florence", "sacred-art", "history", "timed-entry"],
+        area: "Florence",
+        time: "2-4 hr",
+        effort: "High",
+        note: "Reserve ticket",
+        image: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Florence%2C_Italy_-_panoramio_%28125%29.jpg",
+        info: "https://www.uffizi.it/en/the-uffizi",
+        description: "The highest-density Renaissance painting stop in Florence, with Botticelli, Leonardo, Michelangelo, Raphael, Titian, and more. It needs deliberate time and ticket planning."
+      },
+      {
+        id: "florence-duomo",
+        name: "Florence Duomo Complex",
+        categoryIds: ["florence", "sacred-art", "history", "timed-entry"],
+        area: "Florence",
+        time: "2-5 hr",
+        effort: "High",
+        note: "Pass options",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Cattedrale_di_Santa_Maria_del_Fiore_%E2%80%93_Il_Duomo_di_Firenze.jpg/3840px-Cattedrale_di_Santa_Maria_del_Fiore_%E2%80%93_Il_Duomo_di_Firenze.jpg",
+        info: "https://duomo.firenze.it/en/home",
+        description: "Santa Maria del Fiore, Brunelleschi's dome, Giotto's bell tower, the Baptistery, and the Opera del Duomo Museum form a full cluster. Rank it by appetite for stairs and ticket logistics."
+      },
+      {
+        id: "accademia",
+        name: "Accademia Gallery & Michelangelo's David",
+        categoryIds: ["florence", "sacred-art", "timed-entry"],
+        area: "Florence",
+        time: "1-2 hr",
+        effort: "Low",
+        note: "Timed ticket",
+        image: "https://upload.wikimedia.org/wikipedia/commons/d/d5/David_at_the_Galleria_dell%27Accademia_%2861351%29.jpg",
+        info: "https://www.galleriaaccademiafirenze.it/en/",
+        description: "A focused visit built around David, Michelangelo's unfinished Prisoners, and a compact museum route. It is easier to fit than the Uffizi but still demands reservation discipline."
+      },
+      {
+        id: "pitti-boboli",
+        name: "Pitti Palace & Boboli Gardens",
+        categoryIds: ["florence", "sacred-art", "landscape", "timed-entry"],
+        area: "Florence",
+        time: "2-5 hr",
+        effort: "High",
+        note: "Oltrarno",
+        image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Jard%C3%ADn_de_B%C3%B3boli%2C_Florencia%2C_Italia%2C_2022-09-19%2C_DD_26.jpg",
+        info: "https://www.uffizi.it/en/pitti-palace",
+        description: "A Medici grand-ducal complex on the Oltrarno side, useful if the group wants court collections, garden terraces, and a break from the densest central streets."
+      },
+      {
+        id: "santa-croce-oltrarno",
+        name: "Santa Croce & Oltrarno Walk",
+        categoryIds: ["florence", "sacred-art", "history"],
+        area: "Florence",
+        time: "2-4 hr",
+        effort: "Medium",
+        note: "Walkable pair",
+        image: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Basilica_di_Santa_Croce_%2812437%29.jpg",
+        info: "https://www.santacroceopera.it/en/",
+        description: "A Florence route for tombs, frescoes, artisan streets, bridges, and quieter Oltrarno texture. It is a good city choice when the group wants place and movement more than another major museum."
+      }
+    ];
+
+    const categoryLabels = Object.fromEntries(
+      categoryDefinitions.map((category) => [category.id, category.label])
+    );
+
+    const personLabels = Object.fromEntries(
+      people.map((person) => [person.id, person.label])
+    );
+
+    const listEl = document.querySelector("#destination-list");
+    const filterButtonsEl = document.querySelector("#filter-buttons");
+    const sortButtonsEl = document.querySelector("#sort-buttons");
+    const filterCountEl = document.querySelector("#filter-count");
+    const topListEl = document.querySelector("#top-list");
+    const rankedCountEl = document.querySelector("#ranked-count");
+    const shareButton = document.querySelector("#share-results");
+    const copyButton = document.querySelector("#copy-results");
+    const emailButton = document.querySelector("#email-results");
+    const resetButton = document.querySelector("#reset-ranks");
+    const printButton = document.querySelector("#print-page");
+    const statusLineEl = document.querySelector("#status-line");
+
+    let activeCategory = "all";
+    let sortMode = "combined";
+    let rankings = loadRankings();
+    let remoteSync = {
+      lastSignature: "",
+      saveTimer: null,
+      isSaving: false,
+      isPolling: false
+    };
+    saveRankings();
+
+    function loadRankings() {
+      const hashRankings = parseRankingsFromHash();
+      if (Object.keys(hashRankings).length) return hashRankings;
+
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return sanitizeRankings(parsed);
+      } catch {
+        return {};
+      }
+    }
+
+    function sanitizeRankings(value) {
+      const validIds = new Set(destinations.map((destination) => destination.id));
+      const validPeople = new Set(people.map((person) => person.id));
+      const clean = {};
+
+      Object.entries(value || {}).forEach(([id, scores]) => {
+        if (!validIds.has(id) || typeof scores !== "object" || !scores) return;
+        const cleanScores = {};
+
+        Object.entries(scores).forEach(([personId, score]) => {
+          const numericScore = Number(score);
+          if (
+            validPeople.has(personId) &&
+            Number.isInteger(numericScore) &&
+            numericScore >= 1 &&
+            numericScore <= 100
+          ) {
+            cleanScores[personId] = numericScore;
+          }
+        });
+
+        if (Object.keys(cleanScores).length) clean[id] = cleanScores;
+      });
+
+      return clean;
+    }
+
+    function parseRankingsFromHash() {
+      const hash = (window.location.hash || "").replace(/^#/, "");
+      if (!hash.startsWith(HASH_PREFIX)) return {};
+
+      const entries = hash.slice(HASH_PREFIX.length).split(",").filter(Boolean);
+      const parsed = {};
+
+      entries.forEach((entry) => {
+        const [encodedId, encodedScores] = entry.split(":");
+        const id = decodeURIComponent(encodedId || "");
+        if (!id || !encodedScores) return;
+
+        const scores = {};
+        encodedScores.split(".").forEach((token) => {
+          const code = token.slice(0, 1);
+          const personId = codeToPerson[code];
+          const score = Number(token.slice(1));
+          if (personId) scores[personId] = score;
+        });
+
+        parsed[id] = scores;
+      });
+
+      return sanitizeRankings(parsed);
+    }
+
+    function saveRankings() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rankings));
+    }
+
+    function hasRankings(value) {
+      return Object.keys(sanitizeRankings(value)).length > 0;
+    }
+
+    function canonicalRankings(value) {
+      const clean = sanitizeRankings(value);
+      const canonical = {};
+
+      destinations.forEach((destination) => {
+        const scores = clean[destination.id] || {};
+        const cleanScores = {};
+
+        people.forEach((person) => {
+          if (Number.isInteger(scores[person.id])) {
+            cleanScores[person.id] = scores[person.id];
+          }
+        });
+
+        if (Object.keys(cleanScores).length) {
+          canonical[destination.id] = cleanScores;
+        }
+      });
+
+      return canonical;
+    }
+
+    function rankingsSignature(value) {
+      return JSON.stringify(canonicalRankings(value));
+    }
+
+    function mergeRankings(remoteRankings, localRankings) {
+      const merged = canonicalRankings(remoteRankings);
+      const local = canonicalRankings(localRankings);
+
+      Object.entries(local).forEach(([destinationId, scores]) => {
+        merged[destinationId] = {
+          ...(merged[destinationId] || {}),
+          ...scores
+        };
+      });
+
+      return sanitizeRankings(merged);
+    }
+
+    function remoteSyncConfigured() {
+      return Boolean(
+        SUPABASE_URL &&
+        SUPABASE_PUBLISHABLE_KEY &&
+        !SUPABASE_PUBLISHABLE_KEY.startsWith("__")
+      );
+    }
+
+    function supabaseHeaders(extraHeaders = {}) {
+      return {
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+        ...extraHeaders
+      };
+    }
+
+    async function fetchRemoteRankings() {
+      const query = new URLSearchParams({
+        "trip_id": `eq.${SUPABASE_TRIP_ID}`,
+        "select": "rankings,updated_at",
+        "limit": "1"
+      });
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?${query}`, {
+        headers: supabaseHeaders()
+      });
+
+      if (!response.ok) {
+        throw new Error(`Remote fetch failed: ${response.status}`);
+      }
+
+      const rows = await response.json();
+      return sanitizeRankings(rows[0]?.rankings || {});
+    }
+
+    async function saveRemoteRankings() {
+      if (!remoteSyncConfigured()) return;
+
+      remoteSync.isSaving = true;
+      try {
+        const clean = canonicalRankings(rankings);
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
+          method: "POST",
+          headers: supabaseHeaders({
+            "Content-Type": "application/json",
+            "Prefer": "resolution=merge-duplicates,return=minimal"
+          }),
+          body: JSON.stringify({
+            trip_id: SUPABASE_TRIP_ID,
+            rankings: clean
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Remote save failed: ${response.status}`);
+        }
+
+        remoteSync.lastSignature = rankingsSignature(clean);
+        statusMessage("Saved shared rankings.");
+      } catch (error) {
+        console.error(error);
+        statusMessage("Shared save failed; this browser still saved the ranks.");
+      } finally {
+        remoteSync.isSaving = false;
+      }
+    }
+
+    function queueRemoteSave() {
+      if (!remoteSyncConfigured()) return;
+
+      window.clearTimeout(remoteSync.saveTimer);
+      remoteSync.saveTimer = window.setTimeout(() => {
+        saveRemoteRankings();
+      }, 650);
+    }
+
+    async function pollRemoteRankings() {
+      if (!remoteSyncConfigured() || remoteSync.isSaving || remoteSync.isPolling) return;
+
+      remoteSync.isPolling = true;
+      try {
+        const remoteRankings = await fetchRemoteRankings();
+        const remoteSignature = rankingsSignature(remoteRankings);
+        const localSignature = rankingsSignature(rankings);
+
+        if (remoteSignature && remoteSignature !== remoteSync.lastSignature && remoteSignature !== localSignature) {
+          rankings = remoteRankings;
+          remoteSync.lastSignature = remoteSignature;
+          saveRankings();
+          renderDestinations();
+          statusMessage("Loaded shared ranking updates.");
+        } else {
+          remoteSync.lastSignature = remoteSignature;
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        remoteSync.isPolling = false;
+      }
+    }
+
+    async function initializeRemoteSync() {
+      if (!remoteSyncConfigured()) return;
+
+      try {
+        const localRankings = canonicalRankings(rankings);
+        const remoteRankings = await fetchRemoteRankings();
+        const remoteHasRankings = hasRankings(remoteRankings);
+        const localHasRankings = hasRankings(localRankings);
+        const mergedRankings = remoteHasRankings
+          ? remoteRankings
+          : (localHasRankings ? mergeRankings(remoteRankings, localRankings) : remoteRankings);
+
+        if (rankingsSignature(mergedRankings) !== rankingsSignature(rankings)) {
+          rankings = mergedRankings;
+          saveRankings();
+          renderDestinations();
+        }
+
+        remoteSync.lastSignature = rankingsSignature(remoteRankings);
+
+        if (rankingsSignature(mergedRankings) !== remoteSync.lastSignature) {
+          await saveRemoteRankings();
+        } else {
+          statusMessage(hasRankings(mergedRankings) ? "Loaded shared rankings." : "Shared sync ready.");
+        }
+
+        window.setInterval(pollRemoteRankings, SYNC_POLL_MS);
+      } catch (error) {
+        console.error(error);
+        statusMessage("Shared sync is not ready; using this browser's saved ranks.");
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function scoreFor(destination, mode = sortMode) {
+      const scores = rankings[destination.id] || {};
+      if (mode !== "combined") return scores[mode] || null;
+
+      const assignedScores = people
+        .map((person) => scores[person.id])
+        .filter((score) => Number.isInteger(score));
+
+      if (!assignedScores.length) return null;
+
+      const total = assignedScores.reduce((sum, score) => sum + score, 0);
+      return total / assignedScores.length;
+    }
+
+    function formatScore(score) {
+      if (!Number.isFinite(score)) return "-";
+      return Number.isInteger(score) ? String(score) : score.toFixed(1);
+    }
+
+    function rankedCountFor(destination) {
+      const scores = rankings[destination.id] || {};
+      return people.filter((person) => scores[person.id] > 0).length;
+    }
+
+    function sortedDestinations(mode = sortMode) {
+      return destinations
+        .map((destination, index) => ({
+          ...destination,
+          order: index,
+          sortScore: scoreFor(destination, mode),
+          rankedCount: rankedCountFor(destination)
+        }))
+        .sort((a, b) => {
+          const aHasScore = Number.isFinite(a.sortScore);
+          const bHasScore = Number.isFinite(b.sortScore);
+          if (aHasScore && !bHasScore) return -1;
+          if (!aHasScore && bHasScore) return 1;
+          if (aHasScore && bHasScore && a.sortScore !== b.sortScore) return a.sortScore - b.sortScore;
+          if (b.rankedCount !== a.rankedCount) return b.rankedCount - a.rankedCount;
+          return a.order - b.order;
+        });
+    }
+
+    function destinationsForCategory(sorted, categoryId = activeCategory) {
+      if (categoryId === "all") return sorted;
+      return sorted.filter((destination) => destination.categoryIds.includes(categoryId));
+    }
+
+    function categoryLabel(categoryId) {
+      return categoryLabels[categoryId] || categoryId;
+    }
+
+    function effortLabel(effort) {
+      if (!effort) return "";
+      return `${effort} effort`;
+    }
+
+    function renderSortButtons() {
+      sortButtonsEl.innerHTML = sortDefinitions.map((sort) => {
+        const pressed = sort.id === sortMode ? "true" : "false";
+        return `
+          <button
+            class="sort-button"
+            type="button"
+            data-sort="${escapeHtml(sort.id)}"
+            aria-pressed="${pressed}"
+          >
+            ${escapeHtml(sort.label)}
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderFilterButtons(sorted) {
+      filterButtonsEl.innerHTML = categoryDefinitions.map((category) => {
+        const count = destinationsForCategory(sorted, category.id).length;
+        const pressed = category.id === activeCategory ? "true" : "false";
+        const countText = category.id === "all" ? destinations.length : count;
+        return `
+          <button
+            class="filter-button"
+            type="button"
+            data-category="${escapeHtml(category.id)}"
+            aria-pressed="${pressed}"
+          >
+            ${escapeHtml(category.label)} ${countText}
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderFilterCount(visibleCount) {
+      const sortLabel = sortDefinitions.find((definition) => definition.id === sortMode)?.label || "Combined";
+      if (activeCategory === "all") {
+        filterCountEl.textContent = `Showing all ${visibleCount} destinations - ${sortLabel} sort`;
+        return;
+      }
+
+      filterCountEl.textContent = `Showing ${visibleCount} destinations in ${categoryLabel(activeCategory)} - ${sortLabel} sort`;
+    }
+
+    function serializeRankings() {
+      return destinations
+        .map((destination) => {
+          const scores = rankings[destination.id] || {};
+          const tokens = people
+            .filter((person) => scores[person.id] > 0)
+            .map((person) => `${person.code}${scores[person.id]}`);
+
+          if (!tokens.length) return "";
+          return `${encodeURIComponent(destination.id)}:${tokens.join(".")}`;
+        })
+        .filter(Boolean)
+        .join(",");
+    }
+
+    function buildShareUrl() {
+      const url = new URL(window.location.href);
+      const serialized = serializeRankings();
+      url.hash = serialized ? `${HASH_PREFIX}${serialized}` : "";
+      return url.toString();
+    }
+
+    function buildOptions(selectedScore) {
+      let options = '<option value="">-</option>';
+      for (let score = 1; score <= 100; score += 1) {
+        const selected = score === selectedScore ? " selected" : "";
+        options += `<option value="${score}"${selected}>${score}</option>`;
+      }
+      return options;
+    }
+
+    function rankedCountText() {
+      return people
+        .map((person) => {
+          const count = destinations.filter((destination) => (rankings[destination.id] || {})[person.id] > 0).length;
+          return `${count} ${person.label}`;
+        })
+        .join(" / ");
+    }
+
+    function renderTopList(sorted) {
+      const ranked = sorted.filter((destination) => Number.isFinite(destination.sortScore));
+      rankedCountEl.textContent = rankedCountText();
+
+      if (!ranked.length) {
+        topListEl.innerHTML = '<li class="empty-state">No ranks yet</li>';
+        return;
+      }
+
+      topListEl.innerHTML = ranked.slice(0, 10).map((destination) => {
+        const scores = rankings[destination.id] || {};
+        const detail = people
+          .map((person) => `${person.label}: ${scores[person.id] || "-"}`)
+          .join(" | ");
+
+        return `
+          <li>
+            <span class="top-score">${formatScore(destination.sortScore)}</span>
+            <span>
+              <span class="top-name">${escapeHtml(destination.name)}</span>
+              <span class="top-detail">${escapeHtml(detail)}</span>
+            </span>
+          </li>
+        `;
+      }).join("");
+    }
+
+    function statusMessage(message) {
+      statusLineEl.textContent = message;
+      window.setTimeout(() => {
+        if (statusLineEl.textContent === message) statusLineEl.textContent = "";
+      }, 4200);
+    }
+
+    function buildResultsText() {
+      const ranked = sortedDestinations("combined").filter((destination) => Number.isFinite(destination.sortScore));
+      const date = new Date().toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      });
+
+      if (!ranked.length) {
+        return [
+          "tuscany-trip-planner rankings",
+          `Travelers: ${travelerText}`,
+          `Generated: ${date}`,
+          "",
+          "No destinations have been ranked yet.",
+          "",
+          `Planner: ${buildShareUrl()}`
+        ].join("\n");
+      }
+
+      const lines = ranked.map((destination, index) => {
+        const scores = rankings[destination.id] || {};
+        const rank = String(index + 1).padStart(2, "0");
+        const scoreText = people
+          .map((person) => `${person.label}: ${scores[person.id] || "-"}`)
+          .join(" | ");
+        return `${rank}. Combined ${formatScore(destination.sortScore)} - ${destination.name} (${scoreText}; ${destination.area}, ${destination.time})`;
+      });
+
+      return [
+        "tuscany-trip-planner rankings",
+        `Travelers: ${travelerText}`,
+        `Generated: ${date}`,
+        "",
+        ...lines,
+        "",
+        `Open ranked list: ${buildShareUrl()}`,
+        "",
+        "Scale: 1 = highest interest, 100 = lowest interest. Combined score averages the assigned ranks; blank ranks are ignored and unranked destinations sort last."
+      ].join("\n");
+    }
+
+    async function copyResultsText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.setAttribute("readonly", "");
+      textArea.style.position = "fixed";
+      textArea.style.top = "-1000px";
+      document.body.appendChild(textArea);
+      textArea.select();
+      const copied = document.execCommand("copy");
+      document.body.removeChild(textArea);
+      if (!copied) throw new Error("Copy command was not available.");
+    }
+
+    function renderDestinations(focusedId = null, focusedPersonId = null) {
+      const sorted = sortedDestinations();
+      const visible = destinationsForCategory(sorted);
+      renderTopList(sortedDestinations("combined"));
+      renderSortButtons();
+      renderFilterButtons(sorted);
+      renderFilterCount(visible.length);
+
+      listEl.innerHTML = visible.map((destination) => {
+        const scores = rankings[destination.id] || {};
+        const scoreText = formatScore(destination.sortScore);
+        const ribbonClass = Number.isFinite(destination.sortScore) ? "score-ribbon" : "score-ribbon is-empty";
+        const fallback = destination.name.slice(0, 1);
+        const categoryTags = destination.categoryIds.map(categoryLabel);
+        const tags = [...categoryTags, destination.area, destination.time, effortLabel(destination.effort), destination.note]
+          .map((tag) => `<li>${escapeHtml(tag)}</li>`)
+          .join("");
+
+        const rankControls = people.map((person) => `
+          <div class="rank-control">
+            <label for="rank-${escapeHtml(destination.id)}-${escapeHtml(person.id)}">${escapeHtml(person.label)} rank</label>
+            <select
+              class="ranking-select"
+              id="rank-${escapeHtml(destination.id)}-${escapeHtml(person.id)}"
+              data-rank-id="${escapeHtml(destination.id)}"
+              data-person-id="${escapeHtml(person.id)}"
+              aria-label="${escapeHtml(person.label)} rank for ${escapeHtml(destination.name)}, 1 is most preferred"
+            >
+              ${buildOptions(scores[person.id] || 0)}
+            </select>
+          </div>
+        `).join("");
+
+        return `
+          <article class="destination-card" data-destination="${escapeHtml(destination.id)}">
+            <span class="${ribbonClass}" aria-label="Current combined score">
+              ${scoreText}
+              <small>${sortMode === "combined" ? "avg" : escapeHtml(personLabels[sortMode] || "rank")}</small>
+            </span>
+            <figure class="photo" data-fallback="${escapeHtml(fallback)}">
+              <img
+                src="${escapeHtml(destination.image)}"
+                alt="${escapeHtml(destination.name)} in Tuscany"
+                loading="lazy"
+                onerror="this.closest('.photo').classList.add('is-missing')"
+              >
+              <a class="photo-credit" href="${escapeHtml(destination.image)}" target="_blank" rel="noopener">Photo source</a>
+            </figure>
+            <div class="card-body">
+              <div class="card-head">
+                <div>
+                  <h2>${escapeHtml(destination.name)}</h2>
+                </div>
+                <div class="rank-grid">
+                  ${rankControls}
+                </div>
+              </div>
+
+              <ul class="meta" aria-label="Visit notes">${tags}</ul>
+
+              <div class="copy">
+                <p>${escapeHtml(destination.description)}</p>
+              </div>
+
+              <div class="source-row">
+                <a href="${escapeHtml(destination.info)}" target="_blank" rel="noopener">Destination info</a>
+                <a href="${escapeHtml(destination.image)}" target="_blank" rel="noopener">Photo details</a>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      if (focusedId) {
+        requestAnimationFrame(() => {
+          const card = document.querySelector(`[data-destination="${CSS.escape(focusedId)}"]`);
+          const selector = `[data-rank-id="${CSS.escape(focusedId)}"][data-person-id="${CSS.escape(focusedPersonId || "")}"]`;
+          const select = document.querySelector(selector);
+          if (card) {
+            card.classList.add("is-pulse");
+            window.setTimeout(() => card.classList.remove("is-pulse"), 460);
+          }
+          if (select) select.focus({ preventScroll: true });
+        });
+      }
+    }
+
+    listEl.addEventListener("change", (event) => {
+      const select = event.target.closest("[data-rank-id][data-person-id]");
+      if (!select) return;
+
+      const id = select.dataset.rankId;
+      const personId = select.dataset.personId;
+      const score = Number(select.value);
+      const nextScores = { ...(rankings[id] || {}) };
+
+      if (Number.isInteger(score) && score >= 1 && score <= 100) {
+        nextScores[personId] = score;
+      } else {
+        delete nextScores[personId];
+      }
+
+      if (Object.keys(nextScores).length) {
+        rankings[id] = nextScores;
+      } else {
+        delete rankings[id];
+      }
+
+      saveRankings();
+      queueRemoteSave();
+      renderDestinations(id, personId);
+    });
+
+    filterButtonsEl.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-category]");
+      if (!button) return;
+
+      activeCategory = button.dataset.category;
+      renderDestinations();
+    });
+
+    sortButtonsEl.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-sort]");
+      if (!button) return;
+
+      sortMode = button.dataset.sort;
+      renderDestinations();
+    });
+
+    shareButton.addEventListener("click", async () => {
+      const text = buildResultsText();
+      try {
+        if (navigator.share) {
+          await navigator.share({
+            title: "tuscany-trip-planner rankings",
+            text,
+            url: buildShareUrl()
+          });
+          statusMessage("Shared results.");
+        } else {
+          await copyResultsText(text);
+          statusMessage("Share is unavailable, so results were copied.");
+        }
+      } catch (error) {
+        if (error && error.name === "AbortError") {
+          statusMessage("Share cancelled.");
+          return;
+        }
+        window.location.href = `mailto:?subject=${encodeURIComponent("tuscany-trip-planner rankings")}&body=${encodeURIComponent(text)}`;
+      }
+    });
+
+    copyButton.addEventListener("click", async () => {
+      try {
+        await copyResultsText(buildResultsText());
+        statusMessage("Copied ranked results.");
+      } catch {
+        statusMessage("Copy was not available. Use Email results instead.");
+      }
+    });
+
+    emailButton.addEventListener("click", () => {
+      const text = buildResultsText();
+      window.location.href = `mailto:?subject=${encodeURIComponent("tuscany-trip-planner rankings")}&body=${encodeURIComponent(text)}`;
+    });
+
+    resetButton.addEventListener("click", () => {
+      const confirmed = window.confirm(`Reset all shared tuscany-trip-planner ranks for ${travelerText}?`);
+      if (!confirmed) return;
+
+      rankings = {};
+      saveRankings();
+      queueRemoteSave();
+      renderDestinations();
+    });
+
+    printButton.addEventListener("click", () => {
+      window.print();
+    });
+
+    renderDestinations();
+    initializeRemoteSync();
+  </script>
+</body>
+</html>
