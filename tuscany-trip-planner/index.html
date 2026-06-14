@@ -1490,7 +1490,9 @@
       lastSignature: "",
       saveTimer: null,
       isSaving: false,
-      isPolling: false
+      isPolling: false,
+      pendingChanges: new Map(),
+      pendingClearAll: false
     };
     saveRankings();
 
@@ -1599,10 +1601,42 @@
       const local = canonicalRankings(localRankings);
 
       Object.entries(local).forEach(([destinationId, scores]) => {
-        merged[destinationId] = {
-          ...(merged[destinationId] || {}),
-          ...scores
-        };
+        Object.entries(scores).forEach(([personId, score]) => {
+          if (!Number.isInteger(merged[destinationId]?.[personId])) {
+            if (!merged[destinationId]) merged[destinationId] = {};
+            merged[destinationId][personId] = score;
+          }
+        });
+      });
+
+      return sanitizeRankings(merged);
+    }
+
+    function rememberPendingChange(destinationId, personId, action) {
+      remoteSync.pendingClearAll = false;
+      remoteSync.pendingChanges.set(`${destinationId}:${personId}`, {
+        destinationId,
+        personId,
+        action
+      });
+    }
+
+    function applyPendingChanges(baseRankings, localRankings) {
+      const merged = canonicalRankings(baseRankings);
+      const local = canonicalRankings(localRankings);
+
+      remoteSync.pendingChanges.forEach(({ destinationId, personId, action }) => {
+        if (action === "delete") {
+          if (!merged[destinationId]) return;
+          delete merged[destinationId][personId];
+          if (!Object.keys(merged[destinationId]).length) delete merged[destinationId];
+          return;
+        }
+
+        const score = local[destinationId]?.[personId];
+        if (!Number.isInteger(score)) return;
+        if (!merged[destinationId]) merged[destinationId] = {};
+        merged[destinationId][personId] = score;
       });
 
       return sanitizeRankings(merged);
@@ -1647,7 +1681,12 @@
 
       remoteSync.isSaving = true;
       try {
-        const clean = canonicalRankings(rankings);
+        const localRankings = canonicalRankings(rankings);
+        const remoteRankings = remoteSync.pendingClearAll ? {} : await fetchRemoteRankings();
+        const mergedRankings = remoteSync.pendingClearAll
+          ? {}
+          : applyPendingChanges(mergeRankings(remoteRankings, localRankings), localRankings);
+        const clean = canonicalRankings(mergedRankings);
         const response = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
           method: "POST",
           headers: supabaseHeaders({
@@ -1664,7 +1703,15 @@
           throw new Error(`Remote save failed: ${response.status}`);
         }
 
+        if (rankingsSignature(clean) !== rankingsSignature(rankings)) {
+          rankings = clean;
+          saveRankings();
+          renderDestinations();
+        }
+
         remoteSync.lastSignature = rankingsSignature(clean);
+        remoteSync.pendingChanges.clear();
+        remoteSync.pendingClearAll = false;
         statusMessage("Saved shared rankings.");
       } catch (error) {
         console.error(error);
@@ -1684,20 +1731,25 @@
     }
 
     async function pollRemoteRankings() {
-      if (!remoteSyncConfigured() || remoteSync.isSaving || remoteSync.isPolling) return;
+      if (!remoteSyncConfigured() || remoteSync.isSaving || remoteSync.isPolling || remoteSync.pendingClearAll) return;
 
       remoteSync.isPolling = true;
       try {
         const remoteRankings = await fetchRemoteRankings();
         const remoteSignature = rankingsSignature(remoteRankings);
         const localSignature = rankingsSignature(rankings);
+        const mergedRankings = applyPendingChanges(mergeRankings(remoteRankings, rankings), rankings);
+        const mergedSignature = rankingsSignature(mergedRankings);
 
-        if (remoteSignature && remoteSignature !== remoteSync.lastSignature && remoteSignature !== localSignature) {
-          rankings = remoteRankings;
+        if (remoteSignature && remoteSignature !== localSignature) {
+          if (mergedSignature !== localSignature) {
+            rankings = mergedRankings;
+            saveRankings();
+            renderDestinations();
+          }
           remoteSync.lastSignature = remoteSignature;
-          saveRankings();
-          renderDestinations();
-          statusMessage("Loaded shared ranking updates.");
+          if (mergedSignature !== remoteSignature) queueRemoteSave();
+          statusMessage("Merged shared ranking updates.");
         } else {
           remoteSync.lastSignature = remoteSignature;
         }
@@ -1714,11 +1766,7 @@
       try {
         const localRankings = canonicalRankings(rankings);
         const remoteRankings = await fetchRemoteRankings();
-        const remoteHasRankings = hasRankings(remoteRankings);
-        const localHasRankings = hasRankings(localRankings);
-        const mergedRankings = remoteHasRankings
-          ? remoteRankings
-          : (localHasRankings ? mergeRankings(remoteRankings, localRankings) : remoteRankings);
+        const mergedRankings = mergeRankings(remoteRankings, localRankings);
 
         if (rankingsSignature(mergedRankings) !== rankingsSignature(rankings)) {
           rankings = mergedRankings;
@@ -2089,8 +2137,10 @@
 
       if (Number.isInteger(score) && score >= 1 && score <= 100) {
         nextScores[personId] = score;
+        rememberPendingChange(id, personId, "set");
       } else {
         delete nextScores[personId];
+        rememberPendingChange(id, personId, "delete");
       }
 
       if (Object.keys(nextScores).length) {
@@ -2162,6 +2212,8 @@
       if (!confirmed) return;
 
       rankings = {};
+      remoteSync.pendingClearAll = true;
+      remoteSync.pendingChanges.clear();
       saveRankings();
       queueRemoteSave();
       renderDestinations();
